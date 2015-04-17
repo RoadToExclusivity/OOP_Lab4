@@ -4,7 +4,6 @@
 class CStudent : public CPerson
 {
 public:
-	std::shared_ptr<CUniversity> f;
 	CStudent(const std::string name, unsigned yearOfStudy, const std::shared_ptr<const CUniversity> &university,
 			unsigned age, unsigned height, unsigned weight, bool isMale);
 	~CStudent();

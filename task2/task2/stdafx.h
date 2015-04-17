@@ -12,6 +12,8 @@
 #include <string>
 #include <memory>
 #include <set>
+#include <iostream>
+#include <fstream>
 
 class CUniversity;
 

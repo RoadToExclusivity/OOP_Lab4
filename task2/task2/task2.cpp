@@ -56,7 +56,7 @@ bool DeleteUniversity(set<shared_ptr<const CUniversity>> &universities, shared_p
 	{
 		for (auto &student : university->GetStudentsList())
 		{
-			student->SetUniversity(shared_ptr<CUniversity>());
+			university->RemoveStudent(student);
 		}
 
 		return true;
@@ -91,6 +91,40 @@ void PrintStudents(const set<shared_ptr<const CStudent>> &students)
 	for(auto &student : students)
 	{
 		PrintStudentInfo(student);
+	}
+}
+
+void ChangeAge(const set<shared_ptr<const CStudent>> &students, shared_ptr<CStudent> &student, unsigned age)
+{
+	student->SetAge(age);
+}
+
+void Changeheight(const set<shared_ptr<const CStudent>> &students, shared_ptr<CStudent> &student, unsigned height)
+{
+	student->SetHeight(height);
+}
+
+void ChangeYear(const set<shared_ptr<const CStudent>> &students, shared_ptr<CStudent> &student, unsigned year)
+{
+	student->SetStudyYear(year);
+}
+
+void AddStudent(set<shared_ptr<const CStudent>> &students, const string &name, unsigned yearOfStudy, 
+	const shared_ptr<const CUniversity> &university,
+	unsigned age, unsigned height, unsigned weight, bool isMale)
+{
+	shared_ptr<CStudent> student = make_shared<CStudent>(CStudent(name, yearOfStudy, university, age, height, weight, isMale));
+	students.insert(student);
+}
+
+void DeleteStudent(set<shared_ptr<const CStudent>> &students, const shared_ptr<CStudent> &student)
+{
+	if (students.erase(student))
+	{
+		if (student->GetUniversity() != nullptr)
+		{
+			student->GetUniversity()->RemoveStudent(student);
+		}
 	}
 }
 

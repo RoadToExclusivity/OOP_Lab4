@@ -11,6 +11,7 @@
 #include <tchar.h>
 #include <set>
 #include <memory>
+#include <iostream>
 
 #define BOOST_TEST_MODULE Task2Tests
 #define BOOST_TEST_INCLUDED

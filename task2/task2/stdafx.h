@@ -15,7 +15,9 @@
 #include <iostream>
 #include <fstream>
 
+class CCompany;
 class CUniversity;
+
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

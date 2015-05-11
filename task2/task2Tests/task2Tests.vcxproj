@@ -83,6 +83,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\task2\Establishment.h" />
     <ClInclude Include="..\task2\Person.h" />
     <ClInclude Include="..\task2\Student.h" />
     <ClInclude Include="..\task2\University.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\task2\Establishment.cpp" />
     <ClCompile Include="..\task2\Person.cpp" />
     <ClCompile Include="..\task2\Student.cpp" />
     <ClCompile Include="..\task2\University.cpp" />

@@ -47,6 +47,9 @@ BOOST_AUTO_TEST_CASE(StudentWithChangedParams)
 	BOOST_CHECK_EQUAL(stPtr->GetName(), NAME + "2");
 	BOOST_CHECK_EQUAL(stPtr->IsMale(), true);
 	BOOST_CHECK_EQUAL(stPtr->GetUniversity(), pgtu);
+	
+	BOOST_CHECK_EQUAL(pgtu->RemoveStudent(stPtr), true);
+	BOOST_CHECK_EQUAL(stPtr->GetUniversity(), shared_ptr<CUniversity>());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

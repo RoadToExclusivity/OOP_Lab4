@@ -5,22 +5,20 @@
 using namespace std;
 
 CUniversity::CUniversity(const string &name)
-	:m_name(name)
+	:CEstablishment(name)
 {
-}
-
-CUniversity::~CUniversity()
-{
-}
-
-string CUniversity::GetName() const
-{
-	return m_name;
 }
 
 set<shared_ptr<CStudent>> CUniversity::GetStudentsList() const
 {
-	return m_students;
+	set<shared_ptr<CPerson>> persons = GetPersonsList();
+	set<shared_ptr<CStudent>> students;
+	for (auto &person : persons)
+	{
+		students.insert(dynamic_pointer_cast<CStudent>(person));
+	}
+
+	return students;
 }
 
 bool CUniversity::AddStudent(const shared_ptr<CStudent> &student)
@@ -28,7 +26,7 @@ bool CUniversity::AddStudent(const shared_ptr<CStudent> &student)
 	if (!student->GetUniversity())
 	{
 		student->SetUniversity(shared_from_this());
-		m_students.insert(student);
+		AddPerson(student);
 		return true;
 	}
 
@@ -37,16 +35,11 @@ bool CUniversity::AddStudent(const shared_ptr<CStudent> &student)
 
 bool CUniversity::RemoveStudent(const shared_ptr<CStudent> &student)
 {
-	if (m_students.erase(student))
+	if (RemovePerson(student))
 	{
 		student->SetUniversity(shared_ptr<CUniversity>());
 		return true;
 	}
 
 	return false;
-}
-
-void CUniversity::SetNewName(const string &newName)
-{
-	m_name = newName;
 }

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-CStudent::CStudent(const string name, unsigned yearOfStudy, const shared_ptr<const CUniversity> &university,
+CStudent::CStudent(const string &name, unsigned yearOfStudy, const shared_ptr<const CUniversity> &university,
 				unsigned age, unsigned height, unsigned weight, bool isMale)
 				:CPerson(name, age, height, weight, isMale), m_university(university)
 {
@@ -18,16 +18,12 @@ CStudent::CStudent(const string name, unsigned yearOfStudy, const shared_ptr<con
 	}
 }
 
-CStudent::~CStudent()
-{
-}
-
 unsigned CStudent::GetStudyYear() const
 {
 	return m_year;
 }
 
-std::shared_ptr<const CUniversity> CStudent::GetUniversity() const
+shared_ptr<CUniversity> CStudent::GetUniversity() const
 {
 	return m_university.lock();
 }
@@ -40,7 +36,7 @@ void CStudent::SetStudyYear(unsigned year)
 	}
 }
 
-void CStudent::SetUniversity(const std::weak_ptr<const CUniversity> &university)
+void CStudent::SetUniversity(const weak_ptr<const CUniversity> &university)
 {
 	m_university = university;
 }

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-CWorker::CWorker(const std::string name, std::string post, const std::shared_ptr<const CCompany> &company,
+CWorker::CWorker(const std::string name, std::string post, const std::shared_ptr<CCompany> &company,
 	unsigned age, unsigned height, unsigned weight, bool isMale)
 	:CPerson(name, age, height, weight, isMale), m_post(post), m_company(company)
 {
@@ -15,7 +15,7 @@ string CWorker::GetPost() const
 	return m_post;
 }
 
-shared_ptr<const CCompany> CWorker::GetCompany() const
+shared_ptr<CCompany> CWorker::GetCompany() const
 {
 	return m_company.lock();
 }

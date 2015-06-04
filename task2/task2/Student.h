@@ -4,7 +4,7 @@
 class CStudent : public CPerson
 {
 public:
-	CStudent(const std::string &name, unsigned yearOfStudy, const std::shared_ptr<const CUniversity> &university,
+	CStudent(const std::string &name, unsigned yearOfStudy, const std::shared_ptr<CUniversity> &university,
 			unsigned age, unsigned height, unsigned weight, bool isMale);
 
 	unsigned GetStudyYear() const;
@@ -18,6 +18,6 @@ private:
 	const unsigned MAX_YEAR = 5;
 
 	unsigned m_year;
-	std::weak_ptr<const CUniversity> m_university;
+	std::weak_ptr<CUniversity> m_university;
 };
 

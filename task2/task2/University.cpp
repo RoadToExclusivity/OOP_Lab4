@@ -23,7 +23,7 @@ set<shared_ptr<CStudent>> CUniversity::GetStudentsList() const
 
 bool CUniversity::AddStudent(const shared_ptr<CStudent> &student)
 {
-	if (!student->GetUniversity())
+	if (!student->GetUniversity() || student->GetUniversity()->GetName() == GetName())
 	{
 		student->SetUniversity(shared_from_this());
 		AddPerson(student);

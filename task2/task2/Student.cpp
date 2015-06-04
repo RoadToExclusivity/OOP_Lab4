@@ -4,7 +4,7 @@
 
 using namespace std;
 
-CStudent::CStudent(const string &name, unsigned yearOfStudy, const shared_ptr<const CUniversity> &university,
+CStudent::CStudent(const string &name, unsigned yearOfStudy, const shared_ptr<CUniversity> &university,
 				unsigned age, unsigned height, unsigned weight, bool isMale)
 				:CPerson(name, age, height, weight, isMale), m_university(university)
 {

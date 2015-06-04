@@ -23,7 +23,7 @@ set<shared_ptr<CWorker>> CCompany::GetWorkersList() const
 
 bool CCompany::AddWorker(const shared_ptr<CWorker> &worker)
 {
-	if (!worker->GetCompany())
+	if (!worker->GetCompany() || worker->GetCompany()->GetName() == GetName())
 	{
 		worker->SetCompany(shared_from_this());
 		AddPerson(worker);

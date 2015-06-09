@@ -59,13 +59,31 @@ bool ChangeUniversityName(const set<shared_ptr<CUniversity>> &universities, cons
 	return false;
 }
 
-bool DeleteUniversity(set<shared_ptr<CUniversity>> &universities, shared_ptr<CUniversity> &university)
+bool DeleteStudent(set<shared_ptr<CStudent>> &students, shared_ptr<CStudent> &student)
+{
+	if (students.erase(student))
+	{
+		if (student->GetUniversity() != nullptr)
+		{
+			student->GetUniversity()->RemoveStudent(student);
+		}
+		student = nullptr;
+
+		return true;
+	}
+
+	return false;
+}
+
+bool DeleteUniversity(set<shared_ptr<CUniversity>> &universities, set<shared_ptr<CStudent>> &students, 
+						shared_ptr<CUniversity> &university)
 {
 	if (universities.erase(university))
 	{
-		for (auto &student : university->GetStudentsList())
+		for (auto student : university->GetStudentsList())
 		{
 			university->RemoveStudent(student);
+			DeleteStudent(students, student);
 		}
 
 		university = nullptr;
@@ -128,22 +146,6 @@ void AddStudent(set<shared_ptr<CStudent>> &students, shared_ptr<CStudent> &stude
 {
 	students.insert(student);
 	student->GetUniversity()->AddStudent(student);
-}
-
-bool DeleteStudent(set<shared_ptr<CStudent>> &students, shared_ptr<CStudent> &student)
-{
-	if (students.erase(student))
-	{
-		if (student->GetUniversity() != nullptr)
-		{
-			student->GetUniversity()->RemoveStudent(student);
-		}
-		student = nullptr;
-
-		return true;
-	}
-
-	return false;
 }
 
 set<shared_ptr<CUniversity>> LoadUniversities()
@@ -304,9 +306,6 @@ shared_ptr<CStudent> GetStudent(const set <shared_ptr<CStudent>> &students, cons
 	return nullptr;
 }
 
-
-
-
 bool IsCompanyAlreadyExist(const set<shared_ptr<CCompany>> &companies, const string &name)
 {
 	bool hasName = false;
@@ -356,13 +355,31 @@ bool ChangeCompanyName(const set<shared_ptr<CCompany>> &companies, const shared_
 	return false;
 }
 
-bool DeleteCompany(set<shared_ptr<CCompany>> &companies, shared_ptr<CCompany> &company)
+bool DeleteWorker(set<shared_ptr<CWorker>> &workers, shared_ptr<CWorker> &worker)
+{
+	if (workers.erase(worker))
+	{
+		if (worker->GetCompany() != nullptr)
+		{
+			worker->GetCompany()->RemoveWorker(worker);
+		}
+		worker = nullptr;
+
+		return true;
+	}
+
+	return false;
+}
+
+bool DeleteCompany(set<shared_ptr<CCompany>> &companies, set<shared_ptr<CWorker>> &workers, 
+					shared_ptr<CCompany> &company)
 {
 	if (companies.erase(company))
 	{
-		for (auto &worker : company->GetWorkersList())
+		for (auto worker : company->GetWorkersList())
 		{
 			company->RemoveWorker(worker);
+			DeleteWorker(workers, worker);
 		}
 
 		company = nullptr;
@@ -425,22 +442,6 @@ void AddWorker(set<shared_ptr<CWorker>> &workers, shared_ptr<CWorker> &worker)
 {
 	workers.insert(worker);
 	worker->GetCompany()->AddWorker(worker);
-}
-
-bool DeleteWorker(set<shared_ptr<CWorker>> &workers, shared_ptr<CWorker> &worker)
-{
-	if (workers.erase(worker))
-	{
-		if (worker->GetCompany() != nullptr)
-		{
-			worker->GetCompany()->RemoveWorker(worker);
-		}
-		worker = nullptr;
-
-		return true;
-	}
-
-	return false;
 }
 
 set<shared_ptr<CCompany>> LoadCompanies()
@@ -661,7 +662,7 @@ void MainActions(set<shared_ptr<CUniversity>> &universities, set<shared_ptr<CStu
 			case 2:
 				if (auto a = GetUniversity(universities, GetUniversityInfo()))
 				{
-					if (DeleteUniversity(universities, a))
+					if (DeleteUniversity(universities, students, a))
 					{
 						cout << "Deleted";
 					}
@@ -705,9 +706,10 @@ void MainActions(set<shared_ptr<CUniversity>> &universities, set<shared_ptr<CStu
 			}
 			case 5:
 			{
-				string newName = GetUniversityInfo();
-				if (auto a = GetUniversity(universities, newName))
+				string universityInfo = GetUniversityInfo();
+				if (auto a = GetUniversity(universities, universityInfo))
 				{
+					string newName = GetUniversityInfo();
 					a->SetNewName(newName);
 					cout << "Name has changed";
 				}
@@ -743,7 +745,8 @@ void MainActions(set<shared_ptr<CUniversity>> &universities, set<shared_ptr<CStu
 				{
 					if (auto u = GetUniversity(universities, GetUniversityInfo()))
 					{
-						a->SetUniversity(u);
+						a->GetUniversity()->RemoveStudent(a);
+						u->AddStudent(a);
 						cout << "Changed";
 					}
 					else
@@ -786,7 +789,7 @@ void MainActions(set<shared_ptr<CUniversity>> &universities, set<shared_ptr<CStu
 			case 12:
 				if (auto a = GetCompany(companies, GetCompanyName()))
 				{
-					if (DeleteCompany(companies, a))
+					if (DeleteCompany(companies, workers, a))
 					{
 						cout << "Deleted";
 					}
@@ -830,10 +833,13 @@ void MainActions(set<shared_ptr<CUniversity>> &universities, set<shared_ptr<CStu
 			}
 			case 15:
 			{
-				string newName = GetCompanyName();
-				if (auto a = GetCompany(companies, newName))
+				string companyName = GetCompanyName();
+				if (auto a = GetCompany(companies, companyName))
 				{
+					string newName = GetCompanyName();
+					string newMail = GetCompanyEmail();
 					a->SetNewName(newName);
+					a->ChangeEmail(newMail);
 					cout << "Name has changed";
 				}
 				else
@@ -869,7 +875,8 @@ void MainActions(set<shared_ptr<CUniversity>> &universities, set<shared_ptr<CStu
 				{
 					if (auto c = GetCompany(companies, GetCompanyName()))
 					{
-						w->SetCompany(c);
+						w->GetCompany()->RemoveWorker(w);
+						c->AddWorker(w);
 						cout << "Changed";
 					}
 					else
